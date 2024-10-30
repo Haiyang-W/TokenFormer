@@ -5,7 +5,7 @@
 [![arXiv](https://img.shields.io/badge/Arxiv-2403.09394-b31b1b.svg?logo=arXiv)](https://arxiv.org/)
 [![project page](https://img.shields.io/badge/%F0%9F%A4%97%20ProjectPages-TokenFormer-red)](https://haiyang-w.github.io/tokenformer.github.io/)
 [![huggingface weights](https://img.shields.io/badge/%F0%9F%A4%97%20Weights-TokenFormer-yellow)](https://huggingface.co/Haiyang-W)
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FHaiyang-W%2FDSVT%2Ftree%2Fmain&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FHaiyang-W%2FTokenFormer%2Ftree%2Fmain&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 </h5>
 
 This repo is the official implementation of our paper: [TokenFormer: Rethinking Transformer Scaling with Tokenized Model Parameters](https://arxiv.org/) as well as the follow-ups. Our TokenFormer is a natively scalable architecture that leverages the attention mechanism not only for computations among input tokens but also for interactions between tokens and model parameters, thereby enhancing architectural flexibility. We have made every effort to ensure that the codebase is clean, concise, easily readable, state-of-the-art, and relies only on minimal dependencies.
