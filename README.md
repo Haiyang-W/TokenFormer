@@ -2,13 +2,13 @@
 # TokenFormer: a fully attention-based neural network with tokenized model parameters. Maximizing the flexibility of Transformer.
 <h5 align="center">
 
-[![arXiv](https://img.shields.io/badge/Arxiv-2410.30000-b31b1b.svg?logo=arXiv)](https://arxiv.org/)
+[![arXiv](https://img.shields.io/badge/Arxiv-2410.23168-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2410.23168)
 [![project page](https://img.shields.io/badge/%F0%9F%A4%97%20ProjectPages-TokenFormer-red)](https://haiyang-w.github.io/tokenformer.github.io/)
 [![huggingface weights](https://img.shields.io/badge/%F0%9F%A4%97%20Weights-TokenFormer-yellow)](https://huggingface.co/Haiyang-W)
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FHaiyang-W%2FTokenFormer%2Ftree%2Fmain&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 </h5>
 
-This repo is the official implementation of our paper: [TokenFormer: Rethinking Transformer Scaling with Tokenized Model Parameters](https://arxiv.org/) as well as the follow-ups. Our TokenFormer is a natively scalable architecture that leverages the attention mechanism not only for computations among input tokens but also for interactions between tokens and model parameters, thereby enhancing architectural flexibility. We have made every effort to ensure that the codebase is clean, concise, easily readable, state-of-the-art, and relies only on minimal dependencies.
+This repo is the official implementation of our paper: [TokenFormer: Rethinking Transformer Scaling with Tokenized Model Parameters](https://arxiv.org/abs/2410.23168) as well as the follow-ups. Our TokenFormer is a natively scalable architecture that leverages the attention mechanism not only for computations among input tokens but also for interactions between tokens and model parameters, thereby enhancing architectural flexibility. We have made every effort to ensure that the codebase is clean, concise, easily readable, state-of-the-art, and relies only on minimal dependencies.
 
 > TokenFormer: Rethinking Transformer Scaling with Tokenized Model Parameters
 >
@@ -20,8 +20,8 @@ This repo is the official implementation of our paper: [TokenFormer: Rethinking 
 </div>
 
 ## 📣 News
-- [24-10-30] 🚀 Inference code is released.
-- [24-10-30] 👀 TokenFormer is released on [arXiv](https://arxiv.org/).
+- [24-10-31] 🚀 Inference code is released.
+- [24-10-31] 👀 TokenFormer is released on [arXiv](https://arxiv.org/abs/2410.23168).
 
 ## Overview
 - [💫 What we want to do](https://github.com/Haiyang-W/TokenFormer#what-we-want-to-do)
@@ -137,7 +137,7 @@ python ./deepy.py eval.py -d configs tokenformer/150M_eval.yml --eval_tasks lamb
 
 ## 👀 TODO
 
-- [x] Release the [arXiv](https://arxiv.org/abs/2301.06051) version.
+- [x] Release the [arXiv](https://arxiv.org/abs/2410.23168) version.
 - [x] Release inference code and model weights of LLM.
 - [ ] Release training code of LLM.
 - [ ] Release incremental scaling training code of LLM.
@@ -148,4 +148,10 @@ python ./deepy.py eval.py -d configs tokenformer/150M_eval.yml --eval_tasks lamb
 ## 📘 Citation
 Please consider citing our work as follows if it is helpful.
 ```
+@article{wang2024tokenformer,
+  title={TokenFormer: Rethinking Transformer Scaling with Tokenized Model Parameters},
+  author={Wang, Haiyang and Yue, Fan and Naeem, Muhammad Ferjad and Xian, Yongqin and Lenssen, Jan Eric and Wang, Liwei and Tombari, Federico and Schiele, Bernt},
+  journal={arXiv preprint arXiv:2410.23168},
+  year={2024}
+}
 ```
