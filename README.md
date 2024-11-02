@@ -20,9 +20,12 @@ This repo is the official implementation of our paper: [TokenFormer: Rethinking 
 </div>
 
 ## 📣 News
+- [24-11-02] Please feel free to email me if I've missed any relevant papers. I will do my best to include all related papers in future versions.
 - [24-10-31] 🚀 Inference code is released.
 - [24-10-31] 👀 TokenFormer is released on [arXiv](https://arxiv.org/abs/2410.23168).
 
+## 🔥 Some Thoughts
+- We aim to offer a new approach to networks, applicable to any computation graph. In theory, by using **data tokens**, **parameter tokens**, and **memory tokens**, and **through dot-product interactions**, it's possible to flexibly construct any network. There are many design possibilities here. For example, introducing memory tokens can build RNN-like networks similar to [Mamba](https://arxiv.org/abs/2312.00752). Merging parameter tokens with memory tokens creates something akin to a [TTT network](https://arxiv.org/abs/2407.04620). Parameter tokens can also attend to input data in reverse, making the network parameters dynamically data-dependent, updating layer by layer.
 ## Overview
 - [💫 What we want to do](https://github.com/Haiyang-W/TokenFormer#what-we-want-to-do)
 - [🚀 Main Results](https://github.com/Haiyang-W/TokenFormer#main-results)
