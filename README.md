@@ -1,5 +1,5 @@
 
-# TokenFormer: a fully attention-based neural network with tokenized model parameters. Maximizing the flexibility of Transformer.
+# TokenFormer: a fully attention-based neural network with tokenized model parameters. Maximizing the flexibility of Transformer by Tokenizing Anything.
 <h5 align="center">
 
 [![arXiv](https://img.shields.io/badge/Arxiv-2410.23168-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2410.23168)
