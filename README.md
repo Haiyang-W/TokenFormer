@@ -87,12 +87,12 @@ Traditionally, large transformer architectures are trained from scratch without 
 Pretrained models are uploaded to [huggingface](https://huggingface.co/Haiyang-W) ``TokenFormer-150M``, ``TokenFormer-450M``, ``TokenFormer-900M`` and ``TokenFormer-1-5B``, trained on 300B tokens on the Pile.
 
 These models were trained on the [Pile](https://huggingface.co/datasets/EleutherAI/pile), and follow the standard model dimensions of Transformer, and evaluated on standard zero-shot benchmark described by mamba:
-|  Model  |Params| Layers | Model dim. |ckpt|config|
-|---------|---------|---------|--------|--------|---------|
-|  TokenFormer-150M | 150M | 12 | 768  |[ckpt](https://huggingface.co/Haiyang-W/TokenFormer-150M/tree/main)| [config](https://github.com/Haiyang-W/TokenFormer/blob/main/configs/tokenformer/150M_eval.yml) |
-|  TokenFormer-450M | 450M | 24 | 1024 |[ckpt](https://huggingface.co/Haiyang-W/TokenFormer-450M/tree/main)| [config](https://github.com/Haiyang-W/TokenFormer/blob/main/configs/tokenformer/450M_eval.yml) |
-|  TokenFormer-900M| 900M| 32 | 1280 |[ckpt](https://huggingface.co/Haiyang-W/TokenFormer-900M/tree/main)| [config](https://github.com/Haiyang-W/TokenFormer/blob/main/configs/tokenformer/900M_eval.yml) |
-|  TokenFormer-1-5B| 1-5B| 40 | 1536 |[ckpt](https://huggingface.co/Haiyang-W/TokenFormer-1-5B/tree/main)| [config](https://github.com/Haiyang-W/TokenFormer/blob/main/configs/tokenformer/1-5B_eval.yml) |
+|  Model  |Params| Layers | Model dim. |ckpt|config|log|
+|---------|---------|---------|--------|--------|---------|---------|
+|  TokenFormer-150M | 150M | 12 | 768  |[ckpt](https://huggingface.co/Haiyang-W/TokenFormer-150M/tree/main)| [config](https://github.com/Haiyang-W/TokenFormer/blob/main/configs/tokenformer/150M_eval.yml) |[log](https://huggingface.co/Haiyang-W/TokenFormer-150M/blob/main/Pile_training_log.txt)|
+|  TokenFormer-450M | 450M | 24 | 1024 |[ckpt](https://huggingface.co/Haiyang-W/TokenFormer-450M/tree/main)| [config](https://github.com/Haiyang-W/TokenFormer/blob/main/configs/tokenformer/450M_eval.yml) |[log](https://huggingface.co/Haiyang-W/TokenFormer-450M/blob/main/Pile_training_log.txt)|
+|  TokenFormer-900M| 900M| 32 | 1280 |[ckpt](https://huggingface.co/Haiyang-W/TokenFormer-900M/tree/main)| [config](https://github.com/Haiyang-W/TokenFormer/blob/main/configs/tokenformer/900M_eval.yml) |[log](https://huggingface.co/Haiyang-W/TokenFormer-900M/blob/main/Pile_training_log.txt)|
+|  TokenFormer-1-5B| 1-5B| 40 | 1536 |[ckpt](https://huggingface.co/Haiyang-W/TokenFormer-1-5B/tree/main)| [config](https://github.com/Haiyang-W/TokenFormer/blob/main/configs/tokenformer/1-5B_eval.yml) |[log](https://huggingface.co/Haiyang-W/TokenFormer-1-5B/blob/main/Pile_training_log.txt)|
 
 Note: these are base models trained only for 300B tokens, without any form of downstream modification (instruction tuning, etc.). Performance is expected to be comparable or better than other architectures trained on similar data, but not to match larger or fine-tuned models.
 
