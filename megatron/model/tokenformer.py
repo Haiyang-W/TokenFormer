@@ -297,6 +297,8 @@ class ParallelSelfAttention(nn.Module):
         self.flash_triton_fn = flash_attn_unpadded_unpacked_func_triton
         self.flash_qkv_fn = flash_attn_func
         self.flash_varlen_qkv_fn = flash_attn_varlen_func
+        self.dropout_p = neox_args.attention_dropout
+        self.attention_dropout = nn.Dropout(self.dropout_p)
 
         # Output.
         self.proj = Pattention(
