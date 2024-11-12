@@ -138,11 +138,96 @@ cd ./TokenFormer
 python ./deepy.py eval.py -d configs tokenformer/150M_eval.yml --eval_tasks lambada_openai hellaswag piqa arc_challenge arc_easy winogrande
 ```
 
+### Preconfigured Datasets for Training
+Several preconfigured datasets are available, including most components from [openwebtext](https://huggingface.co/datasets/segyges/OpenWebText2) and [Pile](https://huggingface.co/datasets/monology/pile-uncopyrighted). 
+
+e.g. to download and tokenize the openwebtext2 dataset with GPT-NeoX 20B Tokenizer. You can try this small dataset first.
+```
+python prepare_data.py -d ./data -t HFTokenizer --vocab-file tokenizer.json openwebtext2
+```
+The preprocessed data will be located in `./data/openwebtext2`.
+
+For the Pile 300B (unofficial and uncopyied version):
+```
+python prepare_data.py -d ./data -t HFTokenizer --vocab-file tokenizer.json pile
+```
+The preprocessed data will be located in `./data/pile`.
+
+The tokenized data will be saved out to two files: `[data-dir]/[dataset-name]/[dataset-name]_text_document.bin` and `[data-dir]/[dataset-name]/[dataset-name]_text_document.idx`. You will need to add the prefix that both these files share to your training configuration file under the data-path field. E.G:
+```
+"data-path": "./data/pile/pile_0.87_deduped_text_document",
+```
+
+If you just want to get it running easily, you can try `enwik8`.
+
+### Training
+#### Single Node Launching
+Note that this is for single node. Applicable if you can already SSH into an 8-GPU machine and run programs directly.
+```
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python deepy.py train.py configs/tokenformer/150M_train_pile.yml
+```
+#### Multiple Nodes Launching
+Please refer [multi-node-launching](https://github.com/EleutherAI/gpt-neox#multi-node-launching). I use slurm and give some guidance as follows.
+
+First, modify your training config
+```
+{
+  "launcher": "slurm",
+  "deepspeed_slurm": true
+}
+```
+Then I provide my slurm script with 16 GPUs as an example.
+```
+#!/bin/bash
+#SBATCH --job-name="150M_16gpus"
+#SBATCH --constraint="gpu"
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=8
+#SBATCH --gres=gpu:8
+#SBATCH --cpus-per-task=4   #   using 4 cores each. 
+#SBATCH --time=24:00:00
+#SBATCH -o /tmp/150M_%A_%a.out
+
+conda activate TokenFormer
+
+# Some potentially useful distributed environment variables
+export HOSTNAMES=`scontrol show hostnames "$SLURM_JOB_NODELIST"`
+export MASTER_ADDR=$(scontrol show hostnames "$SLURM_JOB_NODELIST" | head -n 1)
+export MASTER_PORT=12856
+export COUNT_NODE=`scontrol show hostnames "$SLURM_JOB_NODELIST" | wc -l`
+
+# Your hostfile creation script from above
+bash ./write_hostfile.sh
+# Tell DeepSpeed where to find our generated hostfile via DLTS_HOSTFILE, you can customize any path. 
+export DLTS_HOSTFILE=/tmp/hosts_$SLURM_JOBID
+
+python3 deepy.py train.py ./configs/tokenformer/150M_train_pile.yml
+
+```
+All paths here can be customized; you can replace `/tmp` in the above script and `write_hostfile.sh` with any path you want. Then run the scripts
+```
+sbatch scripts.sh
+```
+
+#### Zero-shot evaluation after your training
+Go to your checkpoint directory, E.G., 150M
+```
+cd ./work_dirs/150M_TokenFormer_Pile/checkpoints
+python zero_to_fp32.py . pytorch_model.bin
+```
+Then use that path to replace the **[eval_ckpt](https://github.com/Haiyang-W/TokenFormer/blob/79a02d8a2f847e8bbc627f7cb1632a2f24f3f826/configs/tokenformer/150M_eval.yml#L98)** in `150M_eval.yml`.
+```
+cd ./TokenFormer
+python ./deepy.py eval.py -d configs tokenformer/150M_eval.yml --eval_tasks lambada_openai hellaswag piqa arc_challenge arc_easy winogrande
+```
+
+`NOTE:` I’ve only run the training code for the first 1000 iterations to check the loss, and it looks fine, so I’m releasing it for everyone to use for now. I can’t guarantee there are no issues. If you’d prefer to wait, I can do a final check, but it might take some time.
+
 ## 👀 TODO
 
 - [x] Release the [arXiv](https://arxiv.org/abs/2410.23168) version.
 - [x] Release inference code and model weights of LLM.
-- [ ] Release training code of LLM.
+- [x] Release training code of LLM.
 - [ ] Release incremental scaling training code of LLM.
 - [ ] Release training code of Image Classification.
 - [ ] Release model weights of CLIP trained on DataComp-1B.

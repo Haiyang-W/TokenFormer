@@ -177,14 +177,13 @@ class Enron(DataDownloader):
 
 class PileSubset(DataDownloader):
     name = "pile_00"
-    urls = ["https://the-eye.eu/public/AI/pile/train/00.jsonl.zst"]
+    urls = ["https://huggingface.co/datasets/monology/pile-uncopyrighted/resolve/main/train/00.jsonl.zst"]
 
 
 class Pile(DataDownloader):
     name = "pile"
     urls = [
         # f"https://the-eye.eu/public/AI/pile/train/{i:02}.jsonl.zst" for i in range(30)
-        # f"https://huggingface.co/datasets/monology/pile-uncopyrighted/resolve/main/train/{i:02}.jsonl.zst?download=true" for i in range(30)
         f"https://huggingface.co/datasets/monology/pile-uncopyrighted/resolve/main/train/{i:02}.jsonl.zst" for i in range(30)
     ]
 
