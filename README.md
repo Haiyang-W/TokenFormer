@@ -173,7 +173,7 @@ First, modify your training config
 ```
 {
   "launcher": "slurm",
-  "deepspeed_slurm": true
+  "deepspeed_slurm": true,
 }
 ```
 Then I provide my slurm script with 16 GPUs as an example.
