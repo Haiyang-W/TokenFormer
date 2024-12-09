@@ -13,7 +13,7 @@ This repo is the official implementation of our paper: [TokenFormer: Rethinking 
 > TokenFormer: Rethinking Transformer Scaling with Tokenized Model Parameters
 >
 > [Haiyang Wang](https://haiyang-w.github.io/), [Yue Fan](https://yue-fan.github.io/), [Muhammad Ferjad Naeem](https://ferjad.github.io/), [Yongqin Xian](https://xianyongqin.github.io/), [Jan Eric Lenssen](https://janericlenssen.github.io/), [Liwei Wang](http://www.liweiwang-pku.com/), [Federico Tombari](https://federicotombari.github.io/), [Bernt Schiele](https://www.mpi-inf.mpg.de/departments/computer-vision-and-machine-learning/people/bernt-schiele)
-> - Primary contact: Haiyang Wang (haiwang@mpi-inf.mpg.de), Bernt Schiele (schiele@mpi-inf.mpg.de)
+> - Primary contact: Haiyang Wang ~~(haiwang@mpi-inf.mpg.de)~~(wanghaiyang6@stu.pku.edu.cn), Bernt Schiele (schiele@mpi-inf.mpg.de)
 
 <div align="center">
   <img src="assets/Figure1.png" width="800"/>
