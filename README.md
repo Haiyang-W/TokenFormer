@@ -233,12 +233,32 @@ python ./deepy.py eval.py -d configs tokenformer/150M_eval.yml --eval_tasks lamb
 
 `NOTE:` I’ve only run the training code for the first 1000 iterations to check the loss, and it looks fine, so I’m releasing it for everyone to use for now. I can’t guarantee there are no issues. If you’d prefer to wait, I can do a final check, but it might take some time.
 
+### Incremental Training
+Please download the pretrained 354M TokenFormer on openwebtext2 dataset from [huggingface:354M_TokenFormer_Openwebtext2.zip](https://huggingface.co/Haiyang-W/TokenFormer-354M-Openwebtext2/tree/main) and unzip it to your local directory. For example, the relative path is ``./354M_TokenFormer_Openwebtext2/`` from the repository root. Then make the [language dataset](https://github.com/Haiyang-W/TokenFormer/blob/ab93c3de1805a6a7a2733c462068d68e83c849b5/configs/incremental_scaling_openwebtext2/354M_to_757M_train_openwebtext2_60k.yml#L110) and [pretrained checkpoints](https://github.com/Haiyang-W/TokenFormer/blob/ab93c3de1805a6a7a2733c462068d68e83c849b5/configs/incremental_scaling_openwebtext2/354M_to_757M_train_openwebtext2_60k.yml#L33) well with your local path. The pretrain checkpoints here are the results of training TokenFormer 354M on OpenWebText2 for 600k steps. And the corresponing config is [here](https://github.com/Haiyang-W/TokenFormer/blob/main/configs/incremental_scaling_openwebtext2/354M_train_openwebtext2_basemodel.yml)
+
+Please follow [here](https://github.com/Haiyang-W/TokenFormer/tree/main?tab=readme-ov-file#preconfigured-datasets-for-training)  to prepare the openwebtext2 dataset.
+
+```
+cd ./TokenFormer
+python deepy.py train.py configs/incremental_scaling_openwebtext2/354M_to_757M_train_openwebtext2_60k.yml
+```
+
+The model's performance is as follows:
+|  Model  | strategy| Layers | Model dim. | iterations |val ppl|config|
+|---------|---------|---------|--------|--------|---------|---------|
+|  TokenFormer-354M | scratch | 24 | 1024  | 600k |11.9|[config](https://github.com/Haiyang-W/TokenFormer/blob/main/configs/incremental_scaling_openwebtext2/354M_train_openwebtext2_basemodel.yml) |
+|  TransFormer-757M | scratch | 24 | 1536  | 60k |12.0 | - |
+|  TransFormer-757M | scratch | 24 | 1536  | 120k |11.3 | - |
+|  TransFormer-757M | scratch | 24 | 1536  | 600k |10.5 | - |
+|  TokenFormer-757M | incremental | 24 | 1024 | 60k |10.9|[config](https://github.com/Haiyang-W/TokenFormer/blob/main/configs/incremental_scaling_openwebtext2/354M_to_757M_train_openwebtext2_60k.yml) |
+|  TokenFormer-757M | incremental | 24 | 1024 | 120k |10.7|[config](https://github.com/Haiyang-W/TokenFormer/blob/main/configs/incremental_scaling_openwebtext2/354M_to_757M_train_openwebtext2_120k.yml) |
+
 ## 👀 TODO
 
 - [x] Release the [arXiv](https://arxiv.org/abs/2410.23168) version.
 - [x] Release inference code and model weights of LLM.
 - [x] Release training code of LLM.
-- [ ] Release incremental scaling training code of LLM.
+- [x] Release incremental scaling training code of LLM.
 - [ ] Release training code of Image Classification.
 - [ ] Release model weights of CLIP trained on DataComp-1B.
 - [ ] Release some initial results of Vision Language Modeling on LLaVA benchmark.
