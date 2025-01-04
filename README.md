@@ -101,7 +101,7 @@ Will be released later.
 
 ## 🛠️ Quick Start
 ### Installation
-First make sure you are in an environment with Python 3.8 with an appropriate version of PyTorch 1.8 or later installed. **Note:** our TokenFormer is based on the [GPT-NeoX](https://github.com/EleutherAI/gpt-neox), some of the libraries that GPT-NeoX depends on have not been updated to be compatible with Python 3.10+. Python 3.9 appears to work, but this codebase has been developed and tested for Python 3.8.
+First make sure you are in an environment with Python 3.8 and CUDA 12 with an appropriate version of PyTorch 1.8 or later installed. **Note:** our TokenFormer is based on the [GPT-NeoX](https://github.com/EleutherAI/gpt-neox), some of the libraries that GPT-NeoX depends on have not been updated to be compatible with Python 3.10+. Python 3.9 appears to work, but this codebase has been developed and tested for Python 3.8.
 
 To install the remaining basic dependencies, run:
 ```
@@ -111,9 +111,19 @@ git clone https://github.com/Haiyang-W/TokenFormer.git
 
 pip install torch==2.2.1 torchvision==0.17.1 torchaudio==2.2.1 --index-url https://download.pytorch.org/whl/cu121
 
-# raven module load gcc/10
+### raven module load gcc/10
+
+### If you face cargo problem when run pip install -r requirements/requirements.txt,  please follow the bellow command
+# curl https://sh.rustup.rs -sSf | sh
+# export PATH="$HOME/.cargo/bin:$PATH"
+# source ~/.profile
+# source ~/.cargo/env
+
+### if you face mpi4py problem when run pip install -r requirements/requirements.txt, please:
+# conda install -c conda-forge mpi4py=3.0.3
 
 pip install -r requirements/requirements.txt
+
 pip install -r requirements/requirements-flashattention.txt # need gcc > 9
 pip install -r requirements/requirements-wandb.txt # optional, if logging using WandB
 pip install -r requirements/requirements-tensorboard.txt # optional, if logging via tensorboard
