@@ -411,169 +411,18 @@ def custom_load_fn(src, dst):
             else:
                 sd[k].copy_(src[k])
 
-def custom_load_fn_wtefuse(src, dst):
+def custom_load_fn_incremental(src, dst):
     sd = dst.state_dict()
     sd_keys = sd.keys()
+
     # assert len(src) == len(sd_keys), f"mismatched keys: {len(src)} != {len(sd_keys)}"
     transposed = ['value.weight', 'attn.c_proj.weight', 'mlp.c_fc.weight', 'mlp.c_proj.weight']
     # pretrain weight load on the prefix
     with torch.no_grad():
         for k in list(src.keys()):
-            if k.endswith('qkv_key_slot.weight'):
-                temp_param = sd[k].clone()
-                temp_param = temp_param.view(3, temp_param.shape[0] // 3, temp_param.shape[-1])
-                pretrain_slot_num = src[k].shape[0] // 3
-                temp_param[:, :pretrain_slot_num] = src[k].view(3, src[k].shape[0] // 3, src[k].shape[-1])
-                sd[k].copy_(temp_param.flatten(0, 1))
-            elif k.endswith('value_slot.weight'):
-                pretrain_slot_num = src[k].shape[1]
-                sd[k][:, :pretrain_slot_num].copy_(src[k])
-            elif k.endswith('proj_key_slot.weight') or k.endswith('ffn_key_slot.weight'):
-                pretrain_slot_num = src[k].shape[0]
-                sd[k][:pretrain_slot_num, :].copy_(src[k])
-            elif k.endswith('word_embeddings.weight'):
-                sd[k].copy_((src[k].to(sd[k].device) + sd[k])/2)
-            else:
-                sd[k].copy_(src[k])
-
-def new_also_pretrain_load_fn(src, dst):
-    sd = dst.state_dict()
-    sd_keys = sd.keys()
-    # assert len(src) == len(sd_keys), f"mismatched keys: {len(src)} != {len(sd_keys)}"
-    transposed = ['value.weight', 'attn.c_proj.weight', 'mlp.c_fc.weight', 'mlp.c_proj.weight']
-    # pretrain weight load on the prefix
-    with torch.no_grad():
-        for k in list(src.keys()):
-            if k.endswith('qkv_key_slot.weight'):
-                temp_param = sd[k].clone()
-                temp_param = temp_param.view(3, temp_param.shape[0] // 3, temp_param.shape[-1])
-                pretrain_slot_num = src[k].shape[0] // 3
-                temp_param[:, :pretrain_slot_num] = src[k].view(3, src[k].shape[0] // 3, src[k].shape[-1])
-                new_sample_num = temp_param.shape[1] - pretrain_slot_num
-                sd[k].copy_(temp_param.flatten(0, 1))
-                new_k = k.replace('.weight', '_new.weight')
-                sd[new_k].copy_(sd[k])
-            elif k.endswith('value_slot.weight'):
-                pretrain_slot_num = src[k].shape[1]
-                sd[k][:, :pretrain_slot_num].copy_(src[k])
-                new_k = k.replace('.weight', '_new.weight')
-                sd[new_k].copy_(sd[k])
-            elif k.endswith('proj_key_slot.weight') or k.endswith('ffn_key_slot.weight'):
-                pretrain_slot_num = src[k].shape[0]
-                sd[k][:pretrain_slot_num, :].copy_(src[k])
-                new_k = k.replace('.weight', '_new.weight')
-                sd[new_k].copy_(sd[k])
-            else:
-                sd[k].copy_(src[k])
-
-def flownet_chunk_load_fn(src, dst):
-    sd = dst.state_dict()
-    sd_keys = sd.keys()
-    # assert len(src) == len(sd_keys), f"mismatched keys: {len(src)} != {len(sd_keys)}"
-    transposed = ['value.weight', 'attn.c_proj.weight', 'mlp.c_fc.weight', 'mlp.c_proj.weight']
-    # pretrain weight load on the prefix
-    with torch.no_grad():
-        for k in list(src.keys()):
-            if k.find('new') > 0:
-                continue
-            if k.endswith('qkv_key_slot.weight'):
-                new_k = k.replace('.weight', '_new.weight')
-                last_2nd_stage_param = src[k].view(3, src[k].shape[0] // 3, src[k].shape[-1])
-                last_1st_stage_param = src[new_k].view(3, src[new_k].shape[0] // 3, src[new_k].shape[-1])
-                pretrain_param = torch.cat([last_2nd_stage_param, last_1st_stage_param], dim=1)
-                sd[k].copy_(pretrain_param.flatten(0, 1))
-            elif k.endswith('value_slot.weight'):
-                new_k = k.replace('.weight', '_new.weight')
-                last_2nd_stage_param = src[k]
-                last_1st_stage_param = src[new_k]
-                pretrain_param = torch.cat([last_2nd_stage_param, last_1st_stage_param], dim=1)
-                sd[k].copy_(pretrain_param)
-            elif k.endswith('proj_key_slot.weight') or k.endswith('ffn_key_slot.weight'):
-                new_k = k.replace('.weight', '_new.weight')
-                last_2nd_stage_param = src[k]
-                last_1st_stage_param = src[new_k]
-                pretrain_param = torch.cat([last_2nd_stage_param, last_1st_stage_param], dim=0)
-                sd[k].copy_(pretrain_param)
-            else:
-                sd[k].copy_(src[k])
-
-def transformer_pretrain_chunk_load_fn(src, dst):
-    sd = dst.state_dict()
-    sd_keys = sd.keys()
-    # assert len(src) == len(sd_keys), f"mismatched keys: {len(src)} != {len(sd_keys)}"
-    transposed = ['value.weight', 'attn.c_proj.weight', 'mlp.c_fc.weight', 'mlp.c_proj.weight']
-    # pretrain weight load on the prefix
-    with torch.no_grad():
-        for k in list(src.keys()):
-            if k.find('new') > 0:
-                continue
-            if k.endswith('query_key_value.weight') or k.endswith('dense_h_to_4h.weight'):
-                new_row_k = k.replace('.weight', '_new_row.weight')
-                new_column_k = k.replace('.weight', '_new_column.weight')
-                pretrain_param = torch.cat([torch.cat([src[k], src[new_row_k]], dim=0), src[new_column_k]], dim=1)
-                sd[k].copy_(pretrain_param)
-            elif k.endswith('query_key_value.bias') or k.endswith('dense_h_to_4h.bias'):
-                new_row_k = k.replace('.bias', '_new_row.bias')
-                new_column_k = k.replace('.bias', '_new_column.bias')
-                pretrain_param = torch.cat([src[k], src[new_row_k]], dim=0) + src[new_column_k]
-                sd[k].copy_(pretrain_param)
-            elif k.endswith('dense.weight'):
-                new_row_k = k.replace('.weight', '_new_row.weight')
-                new_column_k = k.replace('.weight', '_new_column.weight')
-                pretrain_param = torch.cat([torch.cat([src[k], src[new_row_k]], dim=1), src[new_column_k]], dim=0)
-                sd[k].copy_(pretrain_param)
-            elif k.endswith('dense.bias'):
-                new_row_k = k.replace('.bias', '_new_row.bias')
-                new_column_k = k.replace('.bias', '_new_column.bias')
-                pretrain_param = torch.cat([src[k] + src[new_row_k], src[new_column_k]], dim=0)
-                sd[k].copy_(pretrain_param)
-            elif k.endswith('dense_4h_to_h.weight'):
-                new_row_k = k.replace('.weight', '_new_row.weight')
-                new_column_k = k.replace('.weight', '_new_column.weight')
-                pretrain_param = torch.cat([torch.cat([src[k], src[new_column_k]], dim=1), src[new_row_k]], dim=0)
-                sd[k].copy_(pretrain_param)
-            elif k.endswith('dense_4h_to_h.bias'):
-                new_row_k = k.replace('.bias', '_new_row.bias')
-                new_column_k = k.replace('.bias', '_new_column.bias')
-                pretrain_param = torch.cat([src[k] + src[new_column_k], src[new_row_k]], dim=0)
-                sd[k].copy_(pretrain_param)
-            elif k.endswith('word_embeddings.weight'):
-                new_k = k.replace('.weight', '_new.weight')
-                last_2nd_stage_param = src[k]
-                last_1st_stage_param = src[new_k]
-                pretrain_param = torch.cat([last_2nd_stage_param, last_1st_stage_param], dim=1)
-                sd[k].copy_(pretrain_param)
-            elif k.find('norm') > -1:
-                sd[k][:src[k].shape[0]].copy_(src[k])
-            else:
-                sd[k].copy_(src[k])
-
-
-def transformer_chunk_load_fn(src, dst):
-    sd = dst.state_dict()
-    sd_keys = sd.keys()
-    # assert len(src) == len(sd_keys), f"mismatched keys: {len(src)} != {len(sd_keys)}"
-    transposed = ['value.weight', 'attn.c_proj.weight', 'mlp.c_fc.weight', 'mlp.c_proj.weight']
-    import re
-    pretrain_max_module_num = 0
-    for temp_k in list(src.keys()):
-        module_id = int(re.findall(r"\d+", temp_k)[0])
-        if module_id > pretrain_max_module_num:
-            pretrain_max_module_num = module_id
-    new_max_module_num = 0
-    for temp_k in list(sd_keys):
-        module_id = int(re.findall(r"\d+", temp_k)[0])
-        if module_id >= pretrain_max_module_num:
-            new_max_module_num = module_id
-    # pretrain weight load on the prefix
-    with torch.no_grad():
-        for k in list(src.keys()):
-            if k.find('norm') > -1 and k.find(str(pretrain_max_module_num)) > -1:
-                new_k = k.replace(str(pretrain_max_module_num), str(new_max_module_num))
-                sd[new_k][:src[k].shape[0]].copy_(src[k])
-                # pass
-            elif k.find('norm') > -1 and not k.find(str(pretrain_max_module_num)) > -1:
-                sd[k][:src[k].shape[0]].copy_(src[k])
+            if k.endswith('param_tokens'):
+                pretrain_param_num = src[k].shape[0]
+                sd[k][:pretrain_param_num].copy_(src[k])
             else:
                 sd[k].copy_(src[k])
 
@@ -581,7 +430,6 @@ def load_checkpoint(
     neox_args, model, optimizer, lr_scheduler, inference=False, iteration=None
 ):
     """Load a model checkpoint and return the iteration."""
-
     if neox_args.deepspeed:
         load_optim_and_scheduler = (
             not neox_args.no_load_optim
@@ -615,6 +463,17 @@ def load_checkpoint(
                 )
             if mpu.get_data_parallel_rank() == 0:
                 print("Unable to load checkpoint.")
+            
+            if neox_args.pretrain_partial_init is not None:
+                _, state_dict = model.load_checkpoint(
+                        neox_args.pretrain_partial_init,
+                        load_module_strict=neox_args.load_module_strict,
+                        load_optimizer_states=False,
+                        load_lr_scheduler_states=False,
+                        load_module_only=not False,
+                        tag=tag,
+                        custom_load_fn=custom_load_fn_incremental,
+                    )
 
             return 0  # iteration 0, if not checkpoint loaded
     else:

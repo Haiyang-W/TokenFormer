@@ -153,23 +153,9 @@ class NeoXArgsModel(NeoXArgsTemplate):
     chunk index of mask gradient of slot of attention and ffn block
     """
 
-    new_also_pretrain: bool = False
+    pretrain_partial_init: str = None
     """
-    if all the parameter are initialized with pretrain parameter, means if not match, just repeat.
-    """
-    init_for_transformer_chunk: bool = False
-    """
-    use specifical pretrain initialization for incremental transformer experiments
-    """
-
-    transformer_chunk_load: bool = False
-    """
-    load pretrained transformer chunk model, the pretrained model has two separte parameter.
-    """
-
-    tokenformer_chunk_load: bool = False
-    """
-    load pretrained chunk model, the pretrained model has two separte parameter.
+    load pretrained small tokenformer model for partial initialization.
     """
 
 
