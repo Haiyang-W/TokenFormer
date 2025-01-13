@@ -31,6 +31,37 @@ We use [Google Cloud Platform](https://cloud.google.com/?hl=en) for the main res
 - Dataset: [OpenWebText](https://huggingface.co/datasets/Skylion007/openwebtext). Download the original dataset and then convert it to .arrayrecord (as we are using Grain dataloader). We reserve 5% of the training data for computing the val performance.
 - We use Cloud Storage buckets for storing the checkpoints and the data.
 
+# Data Preparation
+As we use Grain Dataloader, we need to prepare the dataset in `.arrayrecord` format.
+- Download [openwebtext_gcp](https://huggingface.co/datasets/YUE-FAN/openwebtext_gcp) from huggingface with the following code:
+```
+from datasets import load_dataset
+ds = load_dataset("YUE-FAN/openwebtext_gcp")
+ds.save_to_disk("YOUR_LOCAL_PATH")
+```
+- First, convert the data into `.tfrecord` with the following code:
+```
+from datasets import load_from_disk 
+from datasets import Dataset
+# train
+for i in range(76):
+    path = f'YOUR_LOCAL_PATH/train/data-{str(i).zfill(5)}-of-00076.arrow'
+    ds = Dataset.from_file(path)
+    ds.set_format('numpy')
+    ds.export(f'YOUR_LOCAL_PATH_TF/train_data_{str(i).zfill(5)}.tfrecord')    
+# validation
+for i in range(4):
+    path = f'YOUR_LOCAL_PATH/validation/data-{str(i).zfill(5)}-of-00004.arrow'
+    ds = Dataset.from_file(path)
+    ds.set_format('numpy')
+    ds.export(f'YOUR_LOCAL_PATH_TF/validation_data_{str(i).zfill(5)}.tfrecord')
+```
+- Use [ArrayRecord](https://github.com/google/array_record/tree/main/beam) to convert `.tfrecord` into `.arrayrecord`.
+     - Download and install ArrayRecord
+     - Go to `beam/examples` and run `python3 example_gcs_conversion.py` for conversion.
+     - You need to specify `input_pattern` and `output_path` in `example_gcs_conversion.py`.
+     - You may need to change line 27 into `)[0].run()`
+
 # Training
 ## TokenFormer with model scaling
 ```
