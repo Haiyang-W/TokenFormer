@@ -12,7 +12,7 @@ This repo is the official implementation of our paper: [TokenFormer: Rethinking 
 
 > TokenFormer: Rethinking Transformer Scaling with Tokenized Model Parameters
 >
-> [Haiyang Wang](https://haiyang-w.github.io/), [Yue Fan](https://yue-fan.github.io/), [Muhammad Ferjad Naeem](https://ferjad.github.io/), [Yongqin Xian](https://xianyongqin.github.io/), [Jan Eric Lenssen](https://janericlenssen.github.io/), [Liwei Wang](http://www.liweiwang-pku.com/), [Federico Tombari](https://federicotombari.github.io/), [Bernt Schiele](https://www.mpi-inf.mpg.de/departments/computer-vision-and-machine-learning/people/bernt-schiele)
+> [Haiyang Wang*](https://haiyang-w.github.io/), [Yue Fan*](https://yue-fan.github.io/), [Muhammad Ferjad Naeem](https://ferjad.github.io/), [Yongqin Xian](https://xianyongqin.github.io/), [Jan Eric Lenssen](https://janericlenssen.github.io/), [Liwei Wang](http://www.liweiwang-pku.com/), [Federico Tombari](https://federicotombari.github.io/), [Bernt Schiele](https://www.mpi-inf.mpg.de/departments/computer-vision-and-machine-learning/people/bernt-schiele)
 > - Primary contact: Haiyang Wang ~~(haiwang@mpi-inf.mpg.de)~~(wanghaiyang6@stu.pku.edu.cn), Bernt Schiele (schiele@mpi-inf.mpg.de)
 
 <div align="center">
@@ -20,8 +20,11 @@ This repo is the official implementation of our paper: [TokenFormer: Rethinking 
 </div>
 
 ## 📣 News
+- [25-01-22] 🔥 TokenFormer is accepted by **[ICLR2025](https://iclr.cc/)**.
+- [25-01-12] Jax code on TPU (GCP-Cloud) is released, please see [here](https://github.com/Haiyang-W/TokenFormer/tree/main/tokenformer-tpu).
+- [24-11-08] 🚀 Training code with pytorch is released.
 - [24-11-02] Please feel free to email me if I've missed any relevant papers. I will do my best to include all related papers in future versions.
-- [24-10-31] 🚀 Inference code is released.
+- [24-10-31] 🚀 Inference code with pytorch is released.
 - [24-10-31] 👀 TokenFormer is released on [arXiv](https://arxiv.org/abs/2410.23168).
 
 ## 🔥 Some Thoughts
