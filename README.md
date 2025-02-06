@@ -262,17 +262,16 @@ The model's performance is as follows:
 - [x] Release inference code and model weights of LLM.
 - [x] Release training code of LLM.
 - [x] Release incremental scaling training code of LLM.
-- [ ] Release training code of Image Classification.
-- [ ] Release model weights of CLIP trained on DataComp-1B.
-- [ ] Release some initial results of Vision Language Modeling on LLaVA benchmark.
 
 ## 📘 Citation
 Please consider citing our work as follows if it is helpful.
 ```
-@article{wang2024tokenformer,
-  title={TokenFormer: Rethinking Transformer Scaling with Tokenized Model Parameters},
-  author={Wang, Haiyang and Fan, Yue and Naeem, Muhammad Ferjad and Xian, Yongqin and Lenssen, Jan Eric and Wang, Liwei and Tombari, Federico and Schiele, Bernt},
-  journal={arXiv preprint arXiv:2410.23168},
-  year={2024}
+@inproceedings{
+wang2025tokenformer,
+title={TokenFormer: Rethinking Transformer Scaling with Tokenized Model Parameters},
+author={Haiyang Wang and Yue Fan and Muhammad Ferjad Naeem and Liwei Wang and Yongqin Xian and Jan Eric Lenssen and Federico Tombari and Bernt Schiele},
+booktitle={The Thirteenth International Conference on Learning Representations},
+year={2025},
+url={https://openreview.net/forum?id=oQ4igHyh3N}
 }
 ```
