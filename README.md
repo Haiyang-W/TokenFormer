@@ -20,6 +20,7 @@ This repo is the official implementation of our paper: [TokenFormer: Rethinking 
 </div>
 
 ## 📣 News
+- [25-02-11] 🔥 TokenFormer is accepted as **Spotlight**🔥.
 - [25-01-22] 🔥 TokenFormer is accepted by **[ICLR2025](https://iclr.cc/)**.
 - [25-01-12] Jax code on TPU (GCP-Cloud) is released, please see [here](https://github.com/Haiyang-W/TokenFormer/tree/main/tokenformer-tpu).
 - [24-11-08] 🚀 Training code with pytorch is released.
